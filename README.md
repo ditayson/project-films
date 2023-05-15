@@ -1,11 +1,14 @@
-# project-films
+# Project films analysis
 анализ dataset о фильмах и сериалах Netflix и их рейтингах на IMBD
-# Анализ
-#Проанализируем рейтинги фильмов
 
-plt.figure(figsize=(10,8))
-sns.set(style="white")
+# Файлы
+[код](https://github.com/ditayson/project-films/blob/main/netflix.ipynb)
+[данные excel](https://github.com/ditayson/project-films/blob/main/netflixData.xlsx)
 
-# Сделаем переход от самого темного фиолетового к самому светлому
-ax = sns.countplot(x="Rating", data=netflix_movies, palette="Purples_r", order=netflix_movies['Rating'].value_counts().index[0:10])
+# Примеры полученныз данных
+![image](https://github.com/ditayson/project-films/assets/133684422/96413e91-8c54-4351-95b2-8038f4bd7734)
+
+
+
+# Гипотеза
 
