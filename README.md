@@ -6,7 +6,7 @@
 
 [данные excel](https://github.com/ditayson/project-films/blob/main/netflixData.xlsx)
 
-# Примеры полученныз данных
+# Примеры полученные данных
 Анализ рейтингов фильмов
 -----------
 
