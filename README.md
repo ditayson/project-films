@@ -107,39 +107,37 @@
 
 **ВЫВОД: Очевидно, что бюджет, сборы и голоса избирателей взаимосвязаны.**
 
-## Столбцы с типом данных object мы преобразуем в тип данных категории, чтобы тоже включить их в корреляцию.
-
-![image](https://github.com/ditayson/project-films/assets/133684422/bfc2fe03-9695-46f4-be84-1e4a3fb4af20)
-
 ## Создадим Heatmap
 
 ![image](https://github.com/ditayson/project-films/assets/133684422/3f9a9e18-5e3a-49f8-bef7-6ae18c02e0a8)
 
-**ВЫВОД:не заметна какая-либо выдающаяся корреляция между нечисловыми характеристиками. Однако видно, что все же есть зависимость score от votes, year, runtime, genre и друими характеристиками в меньшей степени, а значит есть смысл предиктить оценку фильма в зависимости от них.**
+**ВЫВОД:не заметна какая-либо сильная корреляция между нечисловыми характеристиками. Однако видно, что все же есть зависимость score от votes, year, runtime, genre и друими характеристиками в меньшей степени, а значит есть смысл предиктить оценку фильма в зависимости от них.**
 
-## Посмотрим распределение оценок
-
-![image](https://github.com/ditayson/project-films/assets/133684422/e273bfbd-3ecb-4be1-b5b0-f9c5cf234155)
-
-**График напоминает нормальное распределение.**
-
-## Проверим гипотезу о распределение нормальное
-
-![image](https://github.com/ditayson/project-films/assets/133684422/cf9fa125-9a72-4b2b-be4f-c5d877b0818e)
-
-**ВЫВОД: видно, что набор данных не сбалансирован**
-
-
-## Построим набор гистограмм, которые позволяют оценить распределение
+## Построим набор гистограмм
 
 ![image](https://github.com/ditayson/project-films/assets/133684422/b6c2540a-73f3-41b9-9f20-67cd76ed2e0d)
 
 **Среди числовых признаков нет константных, но есть такие, у которых доминирует одно значение.**
 
-
 ## Построим матрицу графиков
 
 ![image](https://github.com/ditayson/project-films/assets/133684422/0d35b258-b61a-4752-9cdb-d987997a3ff2)
+
+
+## Детально рассмотрим график score
+
+![image](https://github.com/ditayson/project-films/assets/133684422/e273bfbd-3ecb-4be1-b5b0-f9c5cf234155)
+
+**ВЫВОД: График напоминает нормальное распределение.**
+
+## Построим BoxPlot для значений score
+
+![image](https://github.com/ditayson/project-films/assets/133684422/cf9fa125-9a72-4b2b-be4f-c5d877b0818e)
+
+**ВЫВОД: BoxPlot деманстрирует, что медиана распределения находится где-то около 6,5. Верхний (0.75) квантиль расположен около 7, а нижний (0,25) квантиль - между 5 и 6. Большое количествро выбросов ниже min, и одно значение выше max. **
+
+
+
 
 
 
@@ -147,7 +145,37 @@
 
 # Гипотеза
 
-**№1 Гипотеза о положительной корреляции между продолжительностью фильма и его бюджетом.**
+**№1 Гипотеза: Проверим, что распределение нормальное, с помощью критерия согласия.**
+
+Нулевая гипотеза: X принадлежин нормальному распределению
+Альтернативная гипотеза: X не принадлежин нормальному распределению
+Для проверки гипотезы воспользуемся тестом Колмогорова-Смирнова
+
+```
+# Создадим новый датасет и удалим лишние колонки
+#define subsetted DataFrame
+score_data = m_data. copy ()
+score_data.drop(["name","rating","genre","year","released","votes","director","writer","star","country","budget","gross","company","runtime"], axis = 1, inplace = True)
+  
+#Выведем
+print(score_data)
+
+round_data = np.round(score_data['score'],decimals = 0) 
+
+from scipy.stats import kstest
+from scipy.stats import lognorm
+from scipy import stats
+stats.kstest(round_data, 'norm', args=(round_data.mean(), round_data.std(ddof=1)))
+```
+
+**KstestResult(statistic=0.1974903237511067, pvalue=2.3906665907588564e-259)**
+
+**Видим, что p-value очень низкое, значит гипотеза о нормальности отвергается. Делаем вывод о том, что выборка из x (значений score) не имеет нормального распределения.**
+
+
+
+
+**№2 Гипотеза о положительной корреляции между продолжительностью фильма и его бюджетом.**
 
 Нулевая гипотеза: средние бюджеты коротких и длинных фильмов равны.
 Альтернативная гипотеза: средние бюджеты коротких и длинных фильмов различаются.
@@ -155,27 +183,209 @@
 Для проверки этой гипотезы через среднее используем t-test Стьюдента. Для этого разделим выборку на две группы: фильмы с продолжительностью менее 120 минут и фильмы с продолжительностью более 120 минут.
 
 ```
+from scipy.stats import t
+from math import sqrt
+
+# разделение выборки на две группы
 short_films = m_data[m_data['runtime'] < 120]['budget']
 long_films = m_data[m_data['runtime'] >= 120]['budget']
 
+# вычисление среднего значения для каждой группы
 mean_short = short_films.mean()
 mean_long = long_films.mean()
 
+# вычисление стандартного отклонения для каждой группы
 std_short = short_films.std()
 std_long = long_films.std()
 
+# вычисление t-статистики
 n1 = len(short_films)
 n2 = len(long_films)
 t_stat = (mean_long - mean_short) / (sqrt((std_long**2/n2) + (std_short**2/n1)))
 
+# определение уровня значимости и степени свободы
 alpha = 0.05
 df = n1 + n2 - 2
 
+# вычисление критического значения
 t_crit = t.ppf(1 - alpha/2, df)
 
+# сравнение t-статистики с критическим значением
 if abs(t_stat) > t_crit:
     print("Гипотеза подтверждается")
 else:
     print("Гипотеза не подтверждается")
 ```
+
 **Гипотеза подтверждается**
+
+**Из проведенного анализа данных следует, что существует положительная корреляция между продолжительностью фильма и его бюджетом. Это означает, что чем больше продолжительность фильма, тем выше вероятность того, что его бюджет будет больше. **
+
+
+
+***
+
+# Машинное обучение
+
+**score - наша объясняемая переменная**
+
+```
+m_data.head()
+numeric = ['votes', 'budget', 'gross', 'runtime']
+X = m_data[numeric]
+y = m_data['score']
+
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.linear_model import LinearRegression # подгрузили модель
+scaler = MinMaxScaler()
+df_scaled_train = pd.DataFrame(scaler.fit_transform(X), columns=numeric,index=X.index)
+
+X_train, X_test, y_train, y_test = train_test_split(df_scaled_train, y, test_size=0.2, random_state=42, shuffle=True)
+X_train
+```
+
+![image](https://github.com/ditayson/project-films/assets/133684422/1047a378-7844-4035-94ec-195e857c2e6e)
+
+```
+linreg = LinearRegression()
+
+# Обучили модель на тренировочной выборке
+linreg.fit(X_train,y_train)
+
+# Сделали прогнозы на тестовой выборке 
+predicted = linreg.predict(X_test)
+
+# Посчитаем метрики регрессии
+from sklearn import metrics  # подгружаем метрики
+
+def print_metrics(predicted, y_test):
+    print('MAE:', "%.4f" % metrics.mean_absolute_error( predicted, y_test)) #Средняя абсолютная ошибка, MAE
+    print('RMSE:', "%.4f" % np.sqrt(metrics.mean_squared_error(predicted, y_test))) #Средняя квадратичная ошибка, RMSE
+    print('MAPE:', "%.4f" % metrics.mean_absolute_percentage_error(predicted, y_test)) #Средняя абсолютная процентная ошибка, MAPE
+
+print_metrics(predicted, y_test)
+```
+
+**MAE: 0.6323
+RMSE: 0.8178
+MAPE: 0.1006**
+
+```
+# Линейная регрессия 
+model = LinearRegression()
+print('Lineer Regression')
+model.fit(X_train,y_train)
+predicted = model.predict(X_test)
+
+print('Test Score: ',metrics.mean_squared_error(y_test,predicted))
+predicted = model.predict(X_train)
+print('Train Score: ',metrics.mean_squared_error(y_train,predicted))
+```
+
+**Lineer Regression
+Test Score:  0.6688703822809126
+Train Score:  0.6682895828525601**
+
+**Разница между Test Score и Train Score невелика, значит модель обучилась.**
+
+```
+# Random Forest
+model = RandomForestRegressor(n_estimators = 500, max_depth=3)
+print('Random Forest')
+model.fit(X_train,y_train)
+predicted = model.predict(X_test)
+print('метрики')
+print_metrics(y_test, predicted)
+print('')
+print('Test Score: ',metrics.mean_squared_error(y_test,predicted))
+predicted = model.predict(X_train)
+print('Train Score: ',metrics.mean_squared_error(y_train,predicted))
+```
+
+**Random Forest
+метрики
+MAE: 0.6337
+RMSE: 0.8121
+MAPE: 0.1106
+Test Score:  0.6594748682208071
+Train Score:  0.6382946390499364**
+
+**Разница между Test Score и Train Score невелика, значит модель обучилась.**
+
+```
+#KNN-5 (Метод ближайших соседей)
+from sklearn.neighbors import KNeighborsRegressor
+print('KNN-5')
+model_knn = KNeighborsRegressor(n_neighbors=5)
+model_knn.fit(X_train, y_train)
+
+predict_knn = model_knn.predict(X_test)
+#Посчитаем метрики для KNN 
+print('метрики')
+print_metrics(y_test, predict_knn)
+print('')
+print('Test Score: ',metrics.mean_squared_error(y_test,predict_knn))
+predict_knn = model_knn.predict(X_train)
+print('Train Score: ',metrics.mean_squared_error(y_train,predict_knn))
+```
+
+**KNN-5
+метрики
+MAE: 0.5967
+RMSE: 0.7941
+MAPE: 0.1047
+Test Score:  0.630555657292348
+Train Score:  0.4157408570493948
+
+**Gосмотрим, как будет вести себя алгоритм при увеличении числа соседей**
+
+```
+model_knn_10 = neighbors.KNeighborsRegressor(n_neighbors = 10)
+print('KNN-10')
+model_knn_10.fit(X_train,y_train)
+predict_knn_10 = model_knn_10.predict(X_test)
+#Посчитаем метрики для KNN 
+print('метрики')
+print_metrics(y_test, predict_knn_10)
+print('')
+print('Test Score: ',metrics.mean_squared_error(y_test,predict_knn_10))
+predict_knn_10 = model_knn_10.predict(X_train)
+print('Train Score: ',metrics.mean_squared_error(y_train,predict_knn_10))
+predict_knn_10 = model_knn_10.predict(X_test)
+```
+
+**KNN-10
+метрики
+MAE: 0.5738
+RMSE: 0.7627
+MAPE: 0.1009
+Test Score:  0.5817855461085677
+Train Score:  0.47692976774615636**
+
+**Мы знаем, что качество kNN при увеличении К должно сначала расти (приближаясь к числу объектов в выборке), а потом падать, и оптимум будем где-то посередине. С учетом, того, что наша выборка большая, можно увеличить К.**
+
+```
+model_knn_n = neighbors.KNeighborsRegressor(n_neighbors = 500)
+print('KNN-500')
+model_knn_n.fit(X_train,y_train)
+predict_knn_n = model_knn_n.predict(X_test)
+#Посчитаем метрики для KNN 
+print('метрики')
+print_metrics(y_test, predict_knn_n)
+print('')
+print('Test Score: ',metrics.mean_squared_error(y_test,predict_knn_n))
+predict_knn_n = model_knn_n.predict(X_train)
+print('Train Score: ',metrics.mean_squared_error(y_train,predict_knn_n))
+predict_knn_n = model_knn_n.predict(X_test)
+```
+
+**KNN-500
+метрики
+MAE: 0.6327
+RMSE: 0.8060
+MAPE: 0.1088
+Test Score:  0.6495738641465009
+Train Score:  0.6458407197579327**
+
+
+### ВЫВОД: У модели значения метрик больше остальных моделей, значит, мы можем сказать, что она обучилась лучше остальных. (что, в целом, и объясняет ее появление в нашем проекте)
