@@ -69,6 +69,10 @@
 
 **ВЫВОД: Можно увидеть, что на всем временном промежутке наиболее популярными жанрами были комедии и вестерны, наименее популярными: ужастики и музыкальные фильмы.**
 
+## Для наглядности, построим круговую диаграмму по жанрам.
+
+![image](https://github.com/ditayson/project-films/assets/133684422/b51d5fd8-48b5-4978-9ddd-2f553ab81ee9)
+
 ## Выявим Top 10 стран-производителей
 
 ![image](https://github.com/ditayson/project-films/assets/133684422/78e6b544-7928-4b66-848b-6a6a29fea1ac)
@@ -138,9 +142,6 @@
 ![image](https://github.com/ditayson/project-films/assets/133684422/0d35b258-b61a-4752-9cdb-d987997a3ff2)
 
 
-## Для наглядности, построим круговую диаграмму по жанрам.
-
-![image](https://github.com/ditayson/project-films/assets/133684422/b51d5fd8-48b5-4978-9ddd-2f553ab81ee9)
 
 ***
 
