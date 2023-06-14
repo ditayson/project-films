@@ -1,4 +1,4 @@
-# Project films analysis
+# Project films analysis :shipit:
 анализ dataset о фильмах и сериалах и их рейтингах на IMBD
 
 ***
