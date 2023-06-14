@@ -1,6 +1,8 @@
 # Project films analysis
 анализ dataset о фильмах и сериалах Netflix и их рейтингах на IMBD
 
+***
+
 # Разделы
 [Примеры полученных данных](https://github.com/ditayson/project-films/tree/main#%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80%D1%8B-%D0%BF%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%BD%D1%8B%D1%85-%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85)
 
@@ -8,10 +10,14 @@
 
 [Гипотеза](https://github.com/ditayson/project-films/tree/main#%D0%B3%D0%B8%D0%BF%D0%BE%D1%82%D0%B5%D0%B7%D0%B0)
 
+***
+
 # Файлы
 [код](https://github.com/ditayson/project-films/blob/main/netflix.ipynb)
 
 [данные](https://github.com/ditayson/project-films/blob/main/movies.csv)
+
+***
 
 # Примеры полученных данных
 
@@ -81,6 +87,7 @@
 
 **ВЫВОД: фильмы, получившие самую низкую оценку - Супердетки: Вундеркинды 2 (потому что там играют дети), Нереальный блокбастер (с их безумной пародией на Марвел) и Красавица и уродина (там и по обложке всё понятно..)**
 
+***
   
 # Корреляции
 
@@ -135,6 +142,7 @@
 
 ![image](https://github.com/ditayson/project-films/assets/133684422/0d35b258-b61a-4752-9cdb-d987997a3ff2)
 
+***
 
 # Гипотеза
 После анализа данных о фильмах и рейтингах фильмов и сериалов Netflix в различных странах, мы заметили, что преобладающее число актеров является индийской национальности, поэтому можно выдвинуть данную гипотезу:
