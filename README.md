@@ -1,5 +1,5 @@
 # Project films analysis
-анализ dataset о фильмах и сериалах Netflix и их рейтингах на IMBD
+анализ dataset о фильмах и сериалах и их рейтингах на IMBD
 
 ***
 
