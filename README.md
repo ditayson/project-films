@@ -4,7 +4,7 @@
 # Файлы
 [код](https://github.com/ditayson/project-films/blob/main/netflix.ipynb)
 
-[данные excel](https://github.com/ditayson/project-films/blob/main/netflixData.xlsx)
+[данные excel](https://github.com/ditayson/project-films/blob/main/movies.csv)
 
 # Примеры полученных данных
 Анализ рейтингов фильмов
