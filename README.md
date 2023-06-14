@@ -4,7 +4,7 @@
 # Разделы
 [Примеры полученных данных](https://github.com/ditayson/project-films/tree/main#%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80%D1%8B-%D0%BF%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%BD%D1%8B%D1%85-%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85)
 
-Корреляция
+[Корреляция](https://github.com/ditayson/project-films/tree/main#%D0%BA%D0%BE%D1%80%D1%80%D0%B5%D0%BB%D1%8F%D1%86%D0%B8%D0%B8)
 
 [Гипотеза](https://github.com/ditayson/project-films/tree/main#%D0%B3%D0%B8%D0%BF%D0%BE%D1%82%D0%B5%D0%B7%D0%B0)
 
@@ -111,13 +111,13 @@
 
 ![image](https://github.com/ditayson/project-films/assets/133684422/e273bfbd-3ecb-4be1-b5b0-f9c5cf234155)
 
-**График напоминает нормальное распределение. 
+**График напоминает нормальное распределение.**
 
 ## Проверим гипотезу о распределение нормальное
 
 ![image](https://github.com/ditayson/project-films/assets/133684422/cf9fa125-9a72-4b2b-be4f-c5d877b0818e)
 
-**ВЫВОД: видно, что набор данных не сбалансирован 
+**ВЫВОД: видно, что набор данных не сбалансирован**
 
 
 
